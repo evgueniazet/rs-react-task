@@ -1,0 +1,17 @@
+.search {
+    &Wrapper {}
+
+    &Input {
+        height: 22px;
+        border-radius: 4px;
+        border: 1px solid #467062;
+    }
+
+    &Button {
+        background-color: aquamarine;
+        border-radius: 4px;
+        border: 1px solid #467062;
+        padding: 6px 12px;
+        margin-left: 10px;
+    }
+}

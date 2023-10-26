@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from "react";
 import styles from "./App.module.scss";
+import Search from "./components/Search/Search";
 
 interface AppProps {}
 
@@ -12,10 +13,7 @@ class App extends Component<AppProps> {
   render(): ReactNode {
     return (
       <div className={styles.wrapper}>
-        <section className={styles.searchWrapper}>
-          <input className={styles.searchInput} type="text" />
-          <button className={styles.searchButton}>Search</button>
-        </section>
+        <Search />
       </div>
     );
   }
