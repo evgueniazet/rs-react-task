@@ -1,0 +1,42 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.logo {
+    width: 200px;
+}
+
+.button {
+    background-color: #00ff00;
+    font-size: 16px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    animation: pulse 1s infinite;
+}
+
+.button:hover {
+    background-color: #ff00ff;
+    color: #ffffff;
+}
+
+.button:active {
+    background-color: #0000ff;
+    color: #ffffff;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}

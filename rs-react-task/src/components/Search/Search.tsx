@@ -1,7 +1,11 @@
-import React, { ChangeEvent, Component, ReactNode } from "react";
+import { ChangeEvent, Component, ReactNode, FormEvent } from "react";
 import styles from "./Search.module.scss";
+import dataFilter from "../../api/dataFilter";
+import { IData } from "../../interfaces/IData";
 
-interface SearchProps {}
+interface SearchProps {
+  onSubmit: (filteredCharacters: IData[]) => void;
+}
 
 interface SearchState {
   inputValue: string;
@@ -19,22 +23,35 @@ class Search extends Component<SearchProps, SearchState> {
     this.setState({ inputValue: event.target.value });
   };
 
-  handleClick = (): void => {
-    localStorage.setItem("searchValue", this.state.inputValue);
+  handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
+    const { inputValue } = this.state;
+    const apiUrl = "https://rickandmortyapi.com/api/character/";
+    const queryParam = `?name=${inputValue}`;
+    const nameFilter = new dataFilter();
+
+    try {
+      const filteredCharacters = await nameFilter.filter(apiUrl, queryParam);
+      this.props.onSubmit(filteredCharacters);
+    } catch (error) {
+      console.error("Error filtering characters:", error);
+    }
   };
 
   render(): ReactNode {
     return (
       <section className={styles.searchWrapper}>
-        <input
-          className={styles.searchInput}
-          type="text"
-          value={this.state.inputValue}
-          onChange={this.handleInputChange}
-        />
-        <button className={styles.searchButton} onClick={this.handleClick}>
-          Search
-        </button>
+        <form onSubmit={this.handleSubmit}>
+          <input
+            className={styles.searchInput}
+            type="text"
+            value={this.state.inputValue}
+            onChange={this.handleInputChange}
+          />
+          <button className={styles.searchButton} type="submit">
+            Search
+          </button>
+        </form>
       </section>
     );
   }

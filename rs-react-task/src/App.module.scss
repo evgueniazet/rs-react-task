@@ -1,5 +1,18 @@
+body {
+    margin: 0
+}
+
 .wrapper {
-  width: 100vw;
-  height: 100vh;
-  padding: 50px;
+    width: 100vw;
+    padding: 10px;
+    background-color: rgb(211, 252, 211);
+}
+
+.cardsWrapper {
+    display: flex;
+    justify-content: center;
+    row-gap: 10px;
+    column-gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 40px;
 }
