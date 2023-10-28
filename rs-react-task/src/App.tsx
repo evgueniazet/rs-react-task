@@ -33,7 +33,11 @@ class App extends Component<AppProps, AppState> {
 
   renderCard(item: IData) {
     return (
-      <Card name={item.name} location={item.location.name} imgUrl={item.image} />
+      <Card
+        name={item.name}
+        location={item.location.name}
+        imgUrl={item.image}
+      />
     );
   }
 
