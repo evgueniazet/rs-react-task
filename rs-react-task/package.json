@@ -23,7 +23,7 @@
     }
   },
   "lint-staged": {
-    "*.(js|jsx|ts|tsx)": ["npm run lint"]
+    "*.(js|jsx|ts|tsx)": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
