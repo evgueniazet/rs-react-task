@@ -6,3 +6,5 @@ export interface IAppState {
   loading: boolean;
   showError: boolean;
 }
+
+export interface IAppProps {}

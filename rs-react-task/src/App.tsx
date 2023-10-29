@@ -2,14 +2,15 @@ import { Component, ReactNode } from "react";
 import styles from "./App.module.scss";
 import Search from "./components/Search/Search";
 import dataLoader from "./api/dataLoader";
+import dataFilter from "./api/dataFilter";
 import { IData } from "./interfaces/IData";
 import Card from "./components/Card/Card";
 import Loader from "./components/Loader/Loader";
 import Header from "./components/Header/Header";
-import { IAppState } from "./interfaces/IAppState";
+import { IAppState, IAppProps } from "./interfaces/IApp";
 
-class App extends Component<{}, IAppState> {
-  constructor(props: {}) {
+class App extends Component<IAppProps, IAppState> {
+  constructor(props: IAppProps) {
     super(props);
     this.state = {
       filteredCharacters: [],
@@ -34,7 +35,26 @@ class App extends Component<{}, IAppState> {
         console.error(error);
         this.setState({ loading: false });
       });
+
+    const inputValue = localStorage.getItem("inputValue");
+
+    if (inputValue) {
+      this.filterCharacters(inputValue);
+    }
   }
+
+  filterCharacters = async (inputValue: string) => {
+    const apiUrl = "https://rickandmortyapi.com/api/character/";
+    const queryParam = `?name=${inputValue}`;
+    const nameFilter = new dataFilter();
+
+    try {
+      const filteredCharacters = await nameFilter.filter(apiUrl, queryParam);
+      this.setState({ filteredCharacters });
+    } catch (error) {
+      console.error("Error filtering characters:", error);
+    }
+  };
 
   handleError = () => {
     this.setState({ showError: true });
@@ -63,6 +83,7 @@ class App extends Component<{}, IAppState> {
     }
 
     let cardsToRender;
+
     if (filteredCharacters && filteredCharacters.length > 0) {
       cardsToRender = filteredCharacters.map((character) => (
         <Card
@@ -72,7 +93,12 @@ class App extends Component<{}, IAppState> {
           imgUrl={character.image}
         />
       ));
-    } else if (data && data.length > 0) {
+    } else if (
+      data &&
+      data.length > 0 &&
+      filteredCharacters &&
+      filteredCharacters.length === 0
+    ) {
       cardsToRender = data.map((character) => (
         <Card
           key={character.id}
