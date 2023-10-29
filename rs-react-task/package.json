@@ -17,10 +17,10 @@
     }
   },
   "lint-staged": {
-    "src/**/*.js": "eslint",
-    "src/**/*.jsx": "eslint",
-    "src/**/*.ts": "eslint",
-    "src/**/*.tsx": "eslint"
+    "src/**/*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "dependencies": {
     "node-sass": "^9.0.0",
