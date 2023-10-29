@@ -5,7 +5,10 @@ import {
   IErrorBoundaryState,
 } from "../../interfaces/IErrorBoundary";
 
-class ErrorBoundary extends Component<IErrorBoundaryProps, IErrorBoundaryState> {
+class ErrorBoundary extends Component<
+  IErrorBoundaryProps,
+  IErrorBoundaryState
+> {
   state: IErrorBoundaryState = {
     error: null,
   };
