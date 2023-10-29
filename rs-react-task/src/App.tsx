@@ -6,22 +6,16 @@ import { IData } from "./interfaces/IData";
 import Card from "./components/Card/Card";
 import Loader from "./components/Loader/Loader";
 import Header from "./components/Header/Header";
+import { IAppState } from "./interfaces/IAppState";
 
-interface AppProps {}
-
-interface AppState {
-  data: IData[] | null;
-  filteredCharacters: IData[] | null;
-  loading: boolean;
-}
-
-class App extends Component<AppProps, AppState> {
-  constructor(props: AppProps) {
+class App extends Component<{}, IAppState> {
+  constructor(props: {}) {
     super(props);
     this.state = {
       filteredCharacters: [],
       data: [],
       loading: true,
+      showError: false,
     };
   }
 
@@ -41,6 +35,10 @@ class App extends Component<AppProps, AppState> {
         this.setState({ loading: false });
       });
   }
+
+  handleError = () => {
+    this.setState({ showError: true });
+  };
 
   renderCard(item: IData) {
     return (
@@ -89,7 +87,10 @@ class App extends Component<AppProps, AppState> {
 
     return (
       <div className={styles.wrapper}>
-        <Header/>
+        <Header
+          showError={this.state.showError}
+          handleError={this.handleError}
+        />
         <Search onSubmit={this.handleSearch} />
         <div className={styles.cardsWrapper}>{cardsToRender}</div>
       </div>

@@ -1,3 +1,5 @@
+@import '../../styles/variables.scss';
+
 .loaderWrapper {
     display: flex;
     justify-content: center;
@@ -9,7 +11,7 @@
     margin-top: 50px;
     width: 50px;
     height: 4px;
-    background-color: blue;
+    background-color: $secondaryBlue;
     animation: spin 1s linear infinite;
 }
 

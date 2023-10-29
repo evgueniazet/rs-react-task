@@ -1,18 +1,10 @@
 import { ChangeEvent, Component, ReactNode, FormEvent } from "react";
 import styles from "./Search.module.scss";
 import dataFilter from "../../api/dataFilter";
-import { IData } from "../../interfaces/IData";
+import { ISearchProps, ISearchState } from "../../interfaces/ISearch";
 
-interface SearchProps {
-  onSubmit: (filteredCharacters: IData[]) => void;
-}
-
-interface SearchState {
-  inputValue: string;
-}
-
-class Search extends Component<SearchProps, SearchState> {
-  constructor(props: SearchProps) {
+class Search extends Component<ISearchProps, ISearchState> {
+  constructor(props: ISearchProps) {
     super(props);
     this.state = {
       inputValue: "",

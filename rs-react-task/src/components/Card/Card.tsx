@@ -11,7 +11,7 @@ class Card extends Component<ICardProps> {
     const { name, location, imgUrl } = this.props;
     return (
       <section className={styles.card}>
-        <img className={styles.img} src={imgUrl} alt="" />
+        <img className={styles.img} src={imgUrl} alt={name} />
         <h5>Name: {name}</h5>
         <h6>Location: {location}</h6>
       </section>

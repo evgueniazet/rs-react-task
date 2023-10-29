@@ -1,11 +1,15 @@
+@import './styles/variables.scss';
+
 body {
     margin: 0
 }
 
 .wrapper {
-    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     padding: 10px;
-    background-color: rgb(211, 252, 211);
+    background-color: $bg;
 }
 
 .cardsWrapper {
@@ -15,4 +19,5 @@ body {
     column-gap: 10px;
     flex-wrap: wrap;
     margin-top: 40px;
+    width: 1280px;
 }
