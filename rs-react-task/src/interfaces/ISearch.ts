@@ -6,4 +6,5 @@ export interface ISearchProps {
 
 export interface ISearchState {
   inputValue: string;
+  loading: boolean;
 }

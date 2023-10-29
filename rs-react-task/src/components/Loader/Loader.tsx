@@ -5,8 +5,14 @@ class Loader extends Component {
   render() {
     return (
       <div className={styles.loaderWrapper}>
-        Loading...
-        <div className={styles.loader}></div>
+        <div className={styles.loader}>
+          <div className={styles.loaderItem}></div>
+          <div className={styles.loaderItem}></div>
+          <div className={styles.loaderItem}></div>
+          <div className={styles.loaderItem}></div>
+          <div className={styles.loaderItem}></div>
+          <div className={styles.loaderItem}></div>
+        </div>
       </div>
     );
   }

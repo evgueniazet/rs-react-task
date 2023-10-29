@@ -43,7 +43,7 @@ class App extends Component<IAppProps, IAppState> {
     }
   }
 
-  filterCharacters = async (inputValue: string) => {
+  filterCharacters = async (inputValue: any) => {
     const apiUrl = "https://rickandmortyapi.com/api/character/";
     const queryParam = `?name=${inputValue}`;
     const nameFilter = new dataFilter();
@@ -74,14 +74,6 @@ class App extends Component<IAppProps, IAppState> {
   render(): ReactNode {
     const { filteredCharacters, data, loading } = this.state;
 
-    if (loading) {
-      return (
-        <>
-          <Loader />
-        </>
-      );
-    }
-
     let cardsToRender;
 
     if (filteredCharacters && filteredCharacters.length > 0) {
@@ -97,7 +89,8 @@ class App extends Component<IAppProps, IAppState> {
       data &&
       data.length > 0 &&
       filteredCharacters &&
-      filteredCharacters.length === 0
+      filteredCharacters.length === 0 &&
+      !loading
     ) {
       cardsToRender = data.map((character) => (
         <Card
@@ -113,6 +106,11 @@ class App extends Component<IAppProps, IAppState> {
 
     return (
       <div className={styles.wrapper}>
+        {loading && (
+          <div className={styles.loaderContainer}>
+            <Loader />
+          </div>
+        )}
         <Header
           showError={this.state.showError}
           handleError={this.handleError}
