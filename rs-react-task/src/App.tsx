@@ -60,7 +60,7 @@ class App extends Component<IAppProps, IAppState> {
     this.setState({ showError: true });
   };
 
-  renderCard(item: IData) {
+  renderCard(item: any) {
     return (
       <Card
         key={item.id}

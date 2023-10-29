@@ -1,4 +1,8 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+#!/bin/sh
 
-cd ./rs-react-task && npm run prettier:write
+eslint --quiet --ext .js .
+
+if [ $? -ne 0 ]; then
+  echo "ESLint check has completed with errors. Please correct them before committing."
+  exit 1
+fi
