@@ -23,7 +23,7 @@
     }
   },
   "lint-staged": {
-    "*.(js|jsx|ts|tsx)": ["npm run lint:write", "git add"]
+    "*.(js|jsx|ts|tsx)": ["npm run lint"]
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
