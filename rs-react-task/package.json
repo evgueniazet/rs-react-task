@@ -17,6 +17,12 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
+  "lint-staged": {
+    "*.(js|jsx|ts|tsx)": [
+      "npm run lint",
+      "npm run format"
+    ]
+  },
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
