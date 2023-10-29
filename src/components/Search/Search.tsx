@@ -8,9 +8,16 @@ class Search extends Component<ISearchProps, ISearchState> {
   constructor(props: ISearchProps) {
     super(props);
     this.state = {
-      inputValue: localStorage.getItem("inputValue") || "",
+      inputValue: "",
       loading: false,
     };
+  }
+
+  componentDidMount() {
+    const inputValueString = localStorage.getItem("inputValue");
+    if (inputValueString) {
+      this.setState({ inputValue: inputValueString });
+    }
   }
 
   handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -20,6 +27,8 @@ class Search extends Component<ISearchProps, ISearchState> {
   handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault();
     const { inputValue } = this.state;
+
+    localStorage.setItem("inputValue", inputValue);
 
     const apiUrl = "https://rickandmortyapi.com/api/character/";
     const queryParam = `?name=${inputValue}`;

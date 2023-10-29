@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "format:fix": "prettier --write .",
     "preview": "vite preview",
-    "format": "prettier . --write",
+    "format": "prettier --check .",
     "prepare": "cd .. && husky install rs-react-task/.husky"
   },
   "dependencies": {

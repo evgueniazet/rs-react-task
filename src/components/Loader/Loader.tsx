@@ -6,12 +6,9 @@ class Loader extends Component {
     return (
       <div className={styles.loaderWrapper}>
         <div className={styles.loader}>
-          <div className={styles.loaderItem}></div>
-          <div className={styles.loaderItem}></div>
-          <div className={styles.loaderItem}></div>
-          <div className={styles.loaderItem}></div>
-          <div className={styles.loaderItem}></div>
-          <div className={styles.loaderItem}></div>
+          {Array.from({ length: 6 }, (_, index) => (
+            <div key={index} className={styles.loaderItem}></div>
+          ))}
         </div>
       </div>
     );

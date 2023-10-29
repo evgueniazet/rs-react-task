@@ -60,17 +60,6 @@ class App extends Component<IAppProps, IAppState> {
     this.setState({ showError: true });
   };
 
-  renderCard(item: IData) {
-    return (
-      <Card
-        key={item.id}
-        name={item.name}
-        location={item.location.name}
-        imgUrl={item.image}
-      />
-    );
-  }
-
   render(): ReactNode {
     const { filteredCharacters, data, loading } = this.state;
 
