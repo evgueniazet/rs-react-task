@@ -28,7 +28,7 @@ class App extends Component<IAppProps, IAppState> {
     const loader = new dataLoader();
     loader
       .loadData()
-      .then((data: any[]) => {
+      .then((data: IData[]) => {
         this.setState({ data, loading: false });
       })
       .catch((error) => {
@@ -43,7 +43,7 @@ class App extends Component<IAppProps, IAppState> {
     }
   }
 
-  filterCharacters = async (inputValue: any) => {
+  filterCharacters = async (inputValue: string) => {
     const apiUrl = "https://rickandmortyapi.com/api/character/";
     const queryParam = `?name=${inputValue}`;
     const nameFilter = new dataFilter();

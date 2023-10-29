@@ -13,10 +13,12 @@ class Search extends Component<ISearchProps, ISearchState> {
     };
   }
 
-  handleInputChange = async (
-    event: ChangeEvent<HTMLInputElement>
-  ): Promise<void> => {
+  handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ inputValue: event.target.value });
+  };
+
+  handleSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
     const { inputValue } = this.state;
 
     const apiUrl = "https://rickandmortyapi.com/api/character/";
@@ -32,12 +34,6 @@ class Search extends Component<ISearchProps, ISearchState> {
     } finally {
       this.setState({ loading: false });
     }
-  };
-
-  handleSubmit = (event: FormEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    const { inputValue } = this.state;
-    localStorage.setItem("inputValue", inputValue);
   };
 
   render(): ReactNode {
