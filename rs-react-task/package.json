@@ -12,17 +12,6 @@
     "format": "prettier . --write",
     "prepare": "husky install"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
-    ]
-  },
   "dependencies": {
     "node-sass": "^9.0.0",
     "react": "^18.2.0",
@@ -41,7 +30,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.3",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "lint-staged": "^15.0.2",
     "prettier": "3.0.3",
     "sass": "^1.69.4",
