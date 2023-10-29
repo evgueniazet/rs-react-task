@@ -17,14 +17,6 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.(js|jsx|ts|tsx)": "eslint . --ext .js,.jsx,.ts,.tsx"
-  },
   "devDependencies": {
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
