@@ -28,7 +28,7 @@ class App extends Component<IAppProps, IAppState> {
     const loader = new dataLoader();
     loader
       .loadData()
-      .then((data: IData[]) => {
+      .then((data: any[]) => {
         this.setState({ data, loading: false });
       })
       .catch((error) => {
@@ -60,7 +60,7 @@ class App extends Component<IAppProps, IAppState> {
     this.setState({ showError: true });
   };
 
-  renderCard(item: any) {
+  renderCard(item: IData) {
     return (
       <Card
         key={item.id}

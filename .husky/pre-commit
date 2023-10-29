@@ -1,8 +1,8 @@
 #!/bin/sh
 
-eslint --quiet --ext .js .
+eslint --quiet --ext .js,.jsx,.ts,.tsx .
 
 if [ $? -ne 0 ]; then
-  echo "ESLint check has completed with errors. Please correct them before committing."
+  echo "ESLint check has completed with errors. Please correct them before committing"
   exit 1
 fi
