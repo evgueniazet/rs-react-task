@@ -3,6 +3,8 @@ import styles from "./Search.module.scss";
 import dataFilter from "../../api/dataFilter";
 import { ISearchProps } from "../../interfaces/ISearch";
 import Loader from "../Loader/Loader";
+import Button from "../Button/Button";
+import Input from "../Input/Input";
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
@@ -43,15 +45,8 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   return (
     <section className={styles.searchWrapper}>
       <form onSubmit={handleSubmit}>
-        <input
-          className={styles.searchInput}
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-        />
-        <button className={styles.searchButton} type="submit">
-          Search
-        </button>
+        <Input value={inputValue} onChange={handleInputChange}></Input>
+        <Button text="Search" className={styles.button}></Button>
       </form>
       {loading && <Loader />}
     </section>

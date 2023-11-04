@@ -1,32 +1,14 @@
 @import "../../styles/variables.scss";
 
 .search {
-  &Wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-  }
-
-  &Input {
-    height: 24px;
-    border-radius: 4px;
-    border: 1px solid $secondary;
-  }
-
-  &Button {
-    background-color: transparent;
-    border-radius: 4px;
-    border: 1px solid $primaryBlue;
-    color: $primaryBlue;
-    padding: 6px 12px;
-    cursor: pointer;
-    margin-left: 40px;
-    transition: color 0.3s ease;
-
-    &:hover {
-      color: $secondaryBlue;
-      border: 1px solid $secondaryBlue;
-      transition: color 0.3s ease;
+    &Wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 30px;
     }
-  }
+
+}
+
+.button {
+    margin-left: 40px;
 }

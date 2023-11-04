@@ -7,6 +7,7 @@ import { IData } from "../../interfaces/IData";
 import Card from "../../components/Card/Card";
 import Loader from "../../components/Loader/Loader";
 import Header from "../../components/Header/Header";
+import Pagination from "../../components/Pagination/Pagination";
 
 interface IHomeProps {}
 
@@ -92,7 +93,11 @@ const Home: React.FC<IHomeProps> = () => {
         </div>
       )}
       <Header showError={showError} handleError={handleError} />
-      <Search onSubmit={handleSearch} />
+      <div className={styles.searchPaginationContainer}>
+        <Search onSubmit={handleSearch} />
+        <Pagination></Pagination>
+      </div>
+
       <div className={styles.cardsWrapper}>{cardsToRender}</div>
     </div>
   );
