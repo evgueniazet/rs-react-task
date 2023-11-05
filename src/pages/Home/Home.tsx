@@ -8,6 +8,8 @@ import Card from "../../components/Card/Card";
 import Loader from "../../components/Loader/Loader";
 import Header from "../../components/Header/Header";
 import Pagination from "../../components/Pagination/Pagination";
+import paginateRequest from "../../api/paginateRequest";
+import updateUrl from "../../utils/updateUrl";
 
 interface IHomeProps {}
 
@@ -16,6 +18,24 @@ const Home: React.FC<IHomeProps> = () => {
   const [data, setData] = useState<IData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const page = localStorage.getItem("pageNumber");
+  useEffect(() => {
+    const fetchData = async () => {
+      if (page !== null) {
+        const newData = await paginateRequest(Number(page));
+        if (newData) {
+          setData(newData.results);
+          setCurrentPage(Number(page));
+        }
+      } else {
+        updateUrl(1);
+      }
+    };
+
+    fetchData();
+  }, [data]);
 
   const handleSearch = (filteredCharacters: IData[]) => {
     setFilteredCharacters(filteredCharacters);
@@ -85,6 +105,38 @@ const Home: React.FC<IHomeProps> = () => {
     cardsToRender = <p>No characters found.</p>;
   }
 
+  const handleClickPrev = async () => {
+    const prevPageNumber = currentPage - 1;
+    setLoading(true);
+
+    const newData = await paginateRequest(prevPageNumber);
+
+    if (newData && prevPageNumber > 0) {
+      setData(newData.results);
+      localStorage.setItem("pageNumber", String(prevPageNumber));
+      setCurrentPage(prevPageNumber);
+      updateUrl(prevPageNumber);
+    }
+
+    setLoading(false);
+  };
+
+  const handleClickNext = async () => {
+    const nextPageNumber = currentPage + 1;
+    setLoading(true);
+
+    const newData = await paginateRequest(nextPageNumber);
+
+    if (newData && nextPageNumber < newData?.info.pages) {
+      setData(newData.results);
+      localStorage.setItem("pageNumber", String(nextPageNumber));
+      setCurrentPage(nextPageNumber);
+      updateUrl(nextPageNumber);
+    }
+
+    setLoading(false);
+  };
+
   return (
     <div className={styles.wrapper}>
       {loading && (
@@ -95,7 +147,11 @@ const Home: React.FC<IHomeProps> = () => {
       <Header showError={showError} handleError={handleError} />
       <div className={styles.searchPaginationContainer}>
         <Search onSubmit={handleSearch} />
-        <Pagination></Pagination>
+        <Pagination
+          currentPage={currentPage}
+          onClickPrev={handleClickPrev}
+          onClickNext={handleClickNext}
+        />
       </div>
 
       <div className={styles.cardsWrapper}>{cardsToRender}</div>
