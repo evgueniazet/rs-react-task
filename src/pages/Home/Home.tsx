@@ -112,7 +112,7 @@ const Home: React.FC<IHomeProps> = () => {
     setLoading(true);
     let newData = null;
 
-    if (isFiltered === "false") {
+    if (isFiltered !== "true") {
       newData = await paginateRequest(pageNumber);
     } else if (isFiltered === "true") {
       const inputValue = localStorage.getItem("inputValue");
@@ -126,7 +126,7 @@ const Home: React.FC<IHomeProps> = () => {
         (isNext && pageNumber < newData.info.pages) ||
         (!isNext && pageNumber > 0)
       ) {
-        if (isFiltered === "false") {
+        if (isFiltered !== "true") {
           setData(newData.results);
           setFilteredCharacters([]);
         } else if (isFiltered === "true") {
@@ -142,14 +142,14 @@ const Home: React.FC<IHomeProps> = () => {
     setLoading(false);
   };
 
-  const handleClickPrev = async () => {
+  const handleClickPrev = () => {
     const prevPageNumber = currentPage - 1;
-    await handlePagination(prevPageNumber, false);
+    handlePagination(prevPageNumber, false);
   };
 
-  const handleClickNext = async () => {
+  const handleClickNext = () => {
     const nextPageNumber = currentPage + 1;
-    await handlePagination(nextPageNumber, true);
+    handlePagination(nextPageNumber, true);
   };
 
   return (
