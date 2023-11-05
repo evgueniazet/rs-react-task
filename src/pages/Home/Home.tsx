@@ -10,6 +10,7 @@ import Header from "../../components/Header/Header";
 import Pagination from "../../components/Pagination/Pagination";
 import paginateRequest from "../../api/paginateRequest";
 import updateUrl from "../../utils/updateUrl";
+import paginateRequestFilter from "../../api/paginateRequestFilter";
 
 interface IHomeProps {}
 
@@ -21,6 +22,8 @@ const Home: React.FC<IHomeProps> = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const page = localStorage.getItem("pageNumber");
+  const isFiltered = localStorage.getItem("isFiltered");
+
   useEffect(() => {
     const fetchData = async () => {
       if (page !== null) {
@@ -35,7 +38,7 @@ const Home: React.FC<IHomeProps> = () => {
     };
 
     fetchData();
-  }, [data]);
+  }, [page]);
 
   const handleSearch = (filteredCharacters: IData[]) => {
     setFilteredCharacters(filteredCharacters);
@@ -105,36 +108,48 @@ const Home: React.FC<IHomeProps> = () => {
     cardsToRender = <p>No characters found.</p>;
   }
 
-  const handleClickPrev = async () => {
-    const prevPageNumber = currentPage - 1;
+  const handlePagination = async (pageNumber: number, isNext: boolean) => {
     setLoading(true);
+    let newData = null;
 
-    const newData = await paginateRequest(prevPageNumber);
+    if (isFiltered === "false") {
+      newData = await paginateRequest(pageNumber);
+    } else if (isFiltered === "true") {
+      const inputValue = localStorage.getItem("inputValue");
+      if (inputValue) {
+        newData = await paginateRequestFilter(pageNumber, inputValue);
+      }
+    }
 
-    if (newData && prevPageNumber > 0) {
-      setData(newData.results);
-      localStorage.setItem("pageNumber", String(prevPageNumber));
-      setCurrentPage(prevPageNumber);
-      updateUrl(prevPageNumber);
+    if (newData) {
+      if (
+        (isNext && pageNumber < newData.info.pages) ||
+        (!isNext && pageNumber > 0)
+      ) {
+        if (isFiltered === "false") {
+          setData(newData.results);
+          setFilteredCharacters([]);
+        } else if (isFiltered === "true") {
+          setFilteredCharacters(newData.results);
+        }
+
+        localStorage.setItem("pageNumber", String(pageNumber));
+        setCurrentPage(pageNumber);
+        updateUrl(pageNumber);
+      }
     }
 
     setLoading(false);
   };
 
+  const handleClickPrev = async () => {
+    const prevPageNumber = currentPage - 1;
+    await handlePagination(prevPageNumber, false);
+  };
+
   const handleClickNext = async () => {
     const nextPageNumber = currentPage + 1;
-    setLoading(true);
-
-    const newData = await paginateRequest(nextPageNumber);
-
-    if (newData && nextPageNumber < newData?.info.pages) {
-      setData(newData.results);
-      localStorage.setItem("pageNumber", String(nextPageNumber));
-      setCurrentPage(nextPageNumber);
-      updateUrl(nextPageNumber);
-    }
-
-    setLoading(false);
+    await handlePagination(nextPageNumber, true);
   };
 
   return (

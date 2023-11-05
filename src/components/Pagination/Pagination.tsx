@@ -2,19 +2,14 @@ import React, { useState, ChangeEvent } from "react";
 import styles from "./Pagination.module.scss";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
-
-interface IPaginationProps {
-  currentPage: number;
-  onClickPrev: () => void;
-  onClickNext: () => void;
-}
+import { IPaginationProps } from "../../interfaces/IPaginationProps";
 
 const Pagination: React.FC<IPaginationProps> = ({
   currentPage,
   onClickPrev,
   onClickNext,
 }) => {
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState<string>("");
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setInputValue(event.target.value);

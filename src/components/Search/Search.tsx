@@ -5,6 +5,7 @@ import { ISearchProps } from "../../interfaces/ISearch";
 import Loader from "../Loader/Loader";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
+import updateUrl from "../../utils/updateUrl";
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   const [inputValue, setInputValue] = useState("");
@@ -34,6 +35,14 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
     try {
       setLoading(true);
       const filteredCharacters = await dataFilter(apiUrl, queryParam);
+
+      localStorage.setItem("pageNumber", "1");
+      if (inputValue) {
+        localStorage.setItem("isFiltered", "true");
+      } else {
+        localStorage.setItem("isFiltered", "false");
+      }
+      updateUrl(1);
       onSubmit(filteredCharacters);
     } catch (error) {
       console.error("Error filtering characters:", error);
