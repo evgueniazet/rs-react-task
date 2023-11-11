@@ -9,20 +9,17 @@ import updateUrl from "../../utils/updateUrl";
 import { useSearchContext } from "../SearchProvider/SearchProvider";
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
-  //   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const { searchInputValue, setSearchInputValue } = useSearchContext();
 
   useEffect(() => {
     const inputValueString = localStorage.getItem("inputValue");
     if (inputValueString) {
-      //   setInputValue(inputValueString);
       setSearchInputValue(inputValueString);
     }
   }, []);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    // setInputValue(event.target.value);
     setSearchInputValue(event.target.value);
   };
 

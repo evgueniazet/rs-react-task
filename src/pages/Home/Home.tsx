@@ -11,15 +11,21 @@ import Pagination from "../../components/Pagination/Pagination";
 import paginateRequest from "../../api/paginateRequest";
 import updateUrl from "../../utils/updateUrl";
 import paginateRequestFilter from "../../api/paginateRequestFilter";
+import { useSearchContext } from "../../components/SearchProvider/SearchProvider";
 
 interface IHomeProps {}
 
 const Home: React.FC<IHomeProps> = () => {
-  const [filteredCharacters, setFilteredCharacters] = useState<IData[]>([]);
-  const [data, setData] = useState<IData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const {
+    searchResults,
+    setSearchResults,
+    filteredCharacters,
+    setFilteredCharacters,
+  } = useSearchContext();
 
   const page = localStorage.getItem("pageNumber");
   const isFiltered = localStorage.getItem("isFiltered");
@@ -29,7 +35,7 @@ const Home: React.FC<IHomeProps> = () => {
       if (page !== null) {
         const newData = await paginateRequest(Number(page));
         if (newData) {
-          setData(newData.results);
+          setSearchResults(newData.results);
           setCurrentPage(Number(page));
         }
       } else {
@@ -47,7 +53,7 @@ const Home: React.FC<IHomeProps> = () => {
   useEffect(() => {
     dataLoader()
       .then((characters) => {
-        setData(characters);
+        setSearchResults(characters);
         setLoading(false);
       })
       .catch((error) => {
@@ -90,13 +96,13 @@ const Home: React.FC<IHomeProps> = () => {
       />
     ));
   } else if (
-    data &&
-    data.length > 0 &&
+    searchResults &&
+    searchResults.length > 0 &&
     filteredCharacters &&
     filteredCharacters.length === 0 &&
     !loading
   ) {
-    cardsToRender = data.map((character) => (
+    cardsToRender = searchResults.map((character) => (
       <Card
         key={character.id}
         name={character.name}
@@ -127,7 +133,7 @@ const Home: React.FC<IHomeProps> = () => {
         (!isNext && pageNumber > 0)
       ) {
         if (isFiltered !== "true") {
-          setData(newData.results);
+          setSearchResults(newData.results);
           setFilteredCharacters([]);
         } else if (isFiltered === "true") {
           setFilteredCharacters(newData.results);
