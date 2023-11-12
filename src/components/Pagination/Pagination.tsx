@@ -17,10 +17,10 @@ const Pagination: React.FC<IPaginationProps> = ({
 
   return (
     <>
-      <div className={styles.wrapper}>
-        <Button onClick={onClickPrev} text="<"></Button>
-        <div className={styles.pageNumber}>{currentPage}</div>
-        <Button onClick={onClickNext} text=">"></Button>
+      <div className={styles.wrapper} data-testid="pagination">
+        <Button onClick={onClickPrev} data-testid="pagination-prev" text="<"></Button>
+        <div className={styles.pageNumber} data-testid="current-page">{currentPage}</div>
+        <Button onClick={onClickNext} data-testid="pagination-next" text=">"></Button>
       </div>
       <div className={styles.container}>
         Items per page:

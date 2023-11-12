@@ -1,6 +1,10 @@
-import { test, expect } from "vitest";
+import { test, expect, beforeEach } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
 import Search from "../components/Search/Search";
+
+beforeEach(() => {
+  window.localStorage.clear();
+});
 
 test("Search component renders correctly", () => {
   const onSubmitMock = { called: 0 };

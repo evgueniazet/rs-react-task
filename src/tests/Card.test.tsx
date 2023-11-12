@@ -3,7 +3,7 @@ import { render } from "@testing-library/react";
 import Card from "../components/Card/Card";
 
 test("Card component renders correctly with provided props", () => {
-  const name = "John Doe";
+  const name = "Rick";
   const location = "New York";
   const imgUrl = "https://example.com/image.jpg";
 

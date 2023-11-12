@@ -9,13 +9,13 @@ const Header: React.FC<IHeaderProps> = ({ showError, handleError }) => {
   }
 
   return (
-    <header className={styles.header}>
+    <header className={styles.header} data-testid="header">
       <img
         className={styles.logo}
         src={rickMortyLogo}
         alt="Rick and Morty Logo"
       />
-      <button className={styles.button} onClick={handleError}>
+      <button data-testid="error-button" className={styles.button} onClick={handleError}>
         Show error
       </button>
     </header>

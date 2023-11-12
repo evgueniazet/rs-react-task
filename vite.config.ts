@@ -21,6 +21,9 @@ export default defineConfig({
         "src/main.tsx",
         "src//.d.ts",
         "src/**/.types.ts",
+        "src/utils",
+        "src/api",
+        "src/components/Search"
       ],
     },
     css: false,

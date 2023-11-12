@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./Home.module.scss";
 import Search from "../../components/Search/Search";
 import dataLoader from "../../api/dataLoader";
-import dataFilter from "../../api/dataFilter";
 import { IData } from "../../interfaces/IData";
 import Card from "../../components/Card/Card";
 import Loader from "../../components/Loader/Loader";
@@ -12,6 +11,7 @@ import paginateRequest from "../../api/paginateRequest";
 import updateUrl from "../../utils/updateUrl";
 import paginateRequestFilter from "../../api/paginateRequestFilter";
 import { useSearchContext } from "../../components/SearchContext/SearchContext";
+import { filterCharacters } from "../../utils/filterUtils";
 
 interface IHomeProps {}
 
@@ -67,18 +67,6 @@ const Home: React.FC<IHomeProps> = () => {
       filterCharacters(inputValue);
     }
   }, [setSearchResults]);
-
-  const filterCharacters = async (inputValue: string) => {
-    const apiUrl = "https://rickandmortyapi.com/api/character/";
-    const queryParam = `?name=${inputValue}`;
-    try {
-      const filteredCharacters = await dataFilter(apiUrl, queryParam);
-
-      setFilteredCharacters(filteredCharacters);
-    } catch (error) {
-      console.error("Error filtering characters:", error);
-    }
-  };
 
   const handleError = () => {
     setShowError(true);
@@ -159,7 +147,7 @@ const Home: React.FC<IHomeProps> = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-testid="home-component">
       {loading && (
         <div className={styles.loaderContainer}>
           <Loader />
@@ -175,7 +163,9 @@ const Home: React.FC<IHomeProps> = () => {
         />
       </div>
 
-      <div className={styles.cardsWrapper}>{cardsToRender}</div>
+      <div className={styles.cardsWrapper} data-testid="character-card">
+        {cardsToRender}
+      </div>
     </div>
   );
 };
