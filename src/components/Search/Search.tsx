@@ -6,20 +6,21 @@ import Loader from "../Loader/Loader";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import updateUrl from "../../utils/updateUrl";
+import { useSearchContext } from "../SearchContext/SearchContext";
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
-  const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const { searchInputValue, setSearchInputValue } = useSearchContext();
 
   useEffect(() => {
     const inputValueString = localStorage.getItem("inputValue");
     if (inputValueString) {
-      setInputValue(inputValueString);
+      setSearchInputValue(inputValueString);
     }
-  }, []);
+  }, [setSearchInputValue]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setInputValue(event.target.value);
+    setSearchInputValue(event.target.value);
   };
 
   const handleSubmit = async (
@@ -27,17 +28,17 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   ): Promise<void> => {
     event.preventDefault();
 
-    localStorage.setItem("inputValue", inputValue);
+    localStorage.setItem("inputValue", searchInputValue);
 
     const apiUrl = "https://rickandmortyapi.com/api/character/";
-    const queryParam = `?name=${inputValue}`;
+    const queryParam = `?name=${searchInputValue}`;
 
     try {
       setLoading(true);
       const filteredCharacters = await dataFilter(apiUrl, queryParam);
 
       localStorage.setItem("pageNumber", "1");
-      if (inputValue) {
+      if (searchInputValue) {
         localStorage.setItem("isFiltered", "true");
       } else {
         localStorage.setItem("isFiltered", "false");
@@ -54,7 +55,8 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   return (
     <section className={styles.searchWrapper}>
       <form onSubmit={handleSubmit}>
-        <Input value={inputValue} onChange={handleInputChange}></Input>
+        <Input value={searchInputValue} onChange={handleInputChange}></Input>
+
         <Button text="Search" className={styles.button}></Button>
       </form>
       {loading && <Loader />}

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Error: React.FC = () => {
-  return <> Error Page </>;
+  return <> Error 404</>;
 };
 
 export default Error;

@@ -14,6 +14,7 @@ const Input: React.FC<IInputProps> = ({ className, onChange, value }) => {
       type="text"
       value={value}
       onChange={onChange}
+      data-testid="custom-input"
     />
   );
 };

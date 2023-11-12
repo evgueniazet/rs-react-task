@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "./Home.module.scss";
 import Search from "../../components/Search/Search";
 import dataLoader from "../../api/dataLoader";
-import dataFilter from "../../api/dataFilter";
 import { IData } from "../../interfaces/IData";
 import Card from "../../components/Card/Card";
 import Loader from "../../components/Loader/Loader";
@@ -11,15 +10,22 @@ import Pagination from "../../components/Pagination/Pagination";
 import paginateRequest from "../../api/paginateRequest";
 import updateUrl from "../../utils/updateUrl";
 import paginateRequestFilter from "../../api/paginateRequestFilter";
+import { useSearchContext } from "../../components/SearchContext/SearchContext";
+import { filterCharacters } from "../../utils/filterUtils";
 
 interface IHomeProps {}
 
 const Home: React.FC<IHomeProps> = () => {
-  const [filteredCharacters, setFilteredCharacters] = useState<IData[]>([]);
-  const [data, setData] = useState<IData[]>([]);
   const [loading, setLoading] = useState(true);
   const [showError, setShowError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const {
+    searchResults,
+    setSearchResults,
+    filteredCharacters,
+    setFilteredCharacters,
+  } = useSearchContext();
 
   const page = localStorage.getItem("pageNumber");
   const isFiltered = localStorage.getItem("isFiltered");
@@ -29,7 +35,7 @@ const Home: React.FC<IHomeProps> = () => {
       if (page !== null) {
         const newData = await paginateRequest(Number(page));
         if (newData) {
-          setData(newData.results);
+          setSearchResults(newData.results);
           setCurrentPage(Number(page));
         }
       } else {
@@ -38,7 +44,7 @@ const Home: React.FC<IHomeProps> = () => {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, setSearchResults]);
 
   const handleSearch = (filteredCharacters: IData[]) => {
     setFilteredCharacters(filteredCharacters);
@@ -47,7 +53,7 @@ const Home: React.FC<IHomeProps> = () => {
   useEffect(() => {
     dataLoader()
       .then((characters) => {
-        setData(characters);
+        setSearchResults(characters);
         setLoading(false);
       })
       .catch((error) => {
@@ -60,19 +66,7 @@ const Home: React.FC<IHomeProps> = () => {
     if (inputValue) {
       filterCharacters(inputValue);
     }
-  }, []);
-
-  const filterCharacters = async (inputValue: string) => {
-    const apiUrl = "https://rickandmortyapi.com/api/character/";
-    const queryParam = `?name=${inputValue}`;
-    try {
-      const filteredCharacters = await dataFilter(apiUrl, queryParam);
-
-      setFilteredCharacters(filteredCharacters);
-    } catch (error) {
-      console.error("Error filtering characters:", error);
-    }
-  };
+  }, [setSearchResults]);
 
   const handleError = () => {
     setShowError(true);
@@ -90,13 +84,13 @@ const Home: React.FC<IHomeProps> = () => {
       />
     ));
   } else if (
-    data &&
-    data.length > 0 &&
+    searchResults &&
+    searchResults.length > 0 &&
     filteredCharacters &&
     filteredCharacters.length === 0 &&
     !loading
   ) {
-    cardsToRender = data.map((character) => (
+    cardsToRender = searchResults.map((character) => (
       <Card
         key={character.id}
         name={character.name}
@@ -127,7 +121,7 @@ const Home: React.FC<IHomeProps> = () => {
         (!isNext && pageNumber > 0)
       ) {
         if (isFiltered !== "true") {
-          setData(newData.results);
+          setSearchResults(newData.results);
           setFilteredCharacters([]);
         } else if (isFiltered === "true") {
           setFilteredCharacters(newData.results);
@@ -153,7 +147,7 @@ const Home: React.FC<IHomeProps> = () => {
   };
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} data-testid="home-component">
       {loading && (
         <div className={styles.loaderContainer}>
           <Loader />
@@ -169,7 +163,9 @@ const Home: React.FC<IHomeProps> = () => {
         />
       </div>
 
-      <div className={styles.cardsWrapper}>{cardsToRender}</div>
+      <div className={styles.cardsWrapper} data-testid="character-card">
+        {cardsToRender}
+      </div>
     </div>
   );
 };
