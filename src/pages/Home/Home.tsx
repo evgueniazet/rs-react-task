@@ -11,7 +11,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import paginateRequest from "../../api/paginateRequest";
 import updateUrl from "../../utils/updateUrl";
 import paginateRequestFilter from "../../api/paginateRequestFilter";
-import { useSearchContext } from "../../components/SearchProvider/SearchProvider";
+import { useSearchContext } from "../../components/SearchContext/SearchContext";
 
 interface IHomeProps {}
 
@@ -44,7 +44,7 @@ const Home: React.FC<IHomeProps> = () => {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, setSearchResults]);
 
   const handleSearch = (filteredCharacters: IData[]) => {
     setFilteredCharacters(filteredCharacters);
@@ -66,7 +66,7 @@ const Home: React.FC<IHomeProps> = () => {
     if (inputValue) {
       filterCharacters(inputValue);
     }
-  }, []);
+  }, [setSearchResults]);
 
   const filterCharacters = async (inputValue: string) => {
     const apiUrl = "https://rickandmortyapi.com/api/character/";
