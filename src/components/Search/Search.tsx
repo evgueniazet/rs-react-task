@@ -6,7 +6,7 @@ import Loader from "../Loader/Loader";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import updateUrl from "../../utils/updateUrl";
-import { useSearchContext } from "../SearchProvider/SearchProvider";
+import { useSearchContext } from "../SearchContext/SearchContext";
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
     if (inputValueString) {
       setSearchInputValue(inputValueString);
     }
-  }, []);
+  }, [setSearchInputValue]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setSearchInputValue(event.target.value);
