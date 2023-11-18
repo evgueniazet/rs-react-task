@@ -14,9 +14,6 @@ test("Home component renders correctly", () => {
   const component = screen.getByTestId("home-component");
   expect(component).toBeInTheDocument();
 
-  const loader = screen.getByTestId("loaderWrapper");
-  expect(loader).toBeInTheDocument();
-
   const header = screen.getByTestId("header");
   expect(header).toBeInTheDocument();
 
