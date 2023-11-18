@@ -14,10 +14,7 @@ import Button from "../Button/Button";
 import Input from "../Input/Input";
 import updateUrl from "../../utils/updateUrl";
 import { RootState } from "../../store/rootReducer";
-
-interface CustomError {
-  message: string;
-}
+import { ICustomError } from '../../interfaces/ICustomError';
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   const dispatch = useDispatch();
@@ -61,7 +58,7 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
       onSubmit(filteredCharacters);
       dispatch(fetchDataSuccess(filteredCharacters));
     } catch (error) {
-      const customError: CustomError = {
+      const customError: ICustomError = {
         message: "An error occurred",
       };
       console.error("Error filtering characters:", error);
