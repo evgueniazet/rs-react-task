@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Home.module.scss";
 import Search from "../../components/Search/Search";
 import dataLoader from "../../api/dataLoader";
@@ -12,11 +13,19 @@ import updateUrl from "../../utils/updateUrl";
 import paginateRequestFilter from "../../api/paginateRequestFilter";
 import { useSearchContext } from "../../components/SearchContext/SearchContext";
 import { filterCharacters } from "../../utils/filterUtils";
+import {
+  fetchDataStart,
+  fetchDataSuccess,
+  fetchDataFailure,
+} from "../../store/reducers/loaderSlice";
 
 interface IHomeProps {}
 
 const Home: React.FC<IHomeProps> = () => {
-  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const loading = useSelector(
+    (state: { loader: { loading: boolean } }) => state.loader.loading
+  );
   const [showError, setShowError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -32,19 +41,30 @@ const Home: React.FC<IHomeProps> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (page !== null) {
-        const newData = await paginateRequest(Number(page));
-        if (newData) {
-          setSearchResults(newData.results);
-          setCurrentPage(Number(page));
+      dispatch(fetchDataStart());
+      try {
+        let newData;
+        if (page !== null) {
+          newData = await paginateRequest(Number(page));
+          if (newData) {
+            setSearchResults(newData.results);
+            setCurrentPage(Number(page));
+          }
+        } else {
+          updateUrl(1);
         }
-      } else {
-        updateUrl(1);
+        dispatch(fetchDataSuccess(newData));
+      } catch (error) {
+        console.error(error);
+        dispatch(fetchDataFailure((error as Error).message));
       }
     };
 
-    fetchData();
-  }, [page, setSearchResults]);
+    fetchData().catch(() => {
+      console.error("Error loading data.");
+      dispatch(fetchDataFailure("Error loading data."));
+    });
+  }, [page, setSearchResults, dispatch]);
 
   const handleSearch = (filteredCharacters: IData[]) => {
     setFilteredCharacters(filteredCharacters);
@@ -54,11 +74,11 @@ const Home: React.FC<IHomeProps> = () => {
     dataLoader()
       .then((characters) => {
         setSearchResults(characters);
-        setLoading(false);
+        dispatch(fetchDataSuccess(characters));
       })
       .catch((error) => {
         console.error(error);
-        setLoading(false);
+        dispatch(fetchDataFailure(error.message));
       });
 
     const inputValue = localStorage.getItem("inputValue");
@@ -66,7 +86,7 @@ const Home: React.FC<IHomeProps> = () => {
     if (inputValue) {
       filterCharacters(inputValue);
     }
-  }, [setSearchResults]);
+  }, [setSearchResults, dispatch]);
 
   const handleError = () => {
     setShowError(true);
@@ -103,7 +123,7 @@ const Home: React.FC<IHomeProps> = () => {
   }
 
   const handlePagination = async (pageNumber: number, isNext: boolean) => {
-    setLoading(true);
+    dispatch(fetchDataStart());
     let newData = null;
 
     if (isFiltered !== "true") {
@@ -133,7 +153,7 @@ const Home: React.FC<IHomeProps> = () => {
       }
     }
 
-    setLoading(false);
+    dispatch(fetchDataSuccess(newData));
   };
 
   const handleClickPrev = () => {

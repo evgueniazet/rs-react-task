@@ -1,5 +1,7 @@
 import { test, expect, beforeEach } from "vitest";
 import { render, fireEvent } from "@testing-library/react";
+import { Provider } from "react-redux";
+import store from "../store/store";
 import Search from "../components/Search/Search";
 
 beforeEach(() => {
@@ -9,11 +11,13 @@ beforeEach(() => {
 test("Search component renders correctly", () => {
   const onSubmitMock = { called: 0 };
   const { container, getByTestId } = render(
-    <Search
-      onSubmit={() => {
-        onSubmitMock.called += 1;
-      }}
-    />
+    <Provider store={store}>
+      <Search
+        onSubmit={() => {
+          onSubmitMock.called += 1;
+        }}
+      />
+    </Provider>
   );
 
   const inputElement = getByTestId("custom-input") as HTMLInputElement;

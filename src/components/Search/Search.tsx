@@ -1,26 +1,37 @@
-import React, { ChangeEvent, FormEvent, useState, useEffect } from "react";
+import React, { ChangeEvent, FormEvent, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Search.module.scss";
 import dataFilter from "../../api/dataFilter";
+import { saveSearchValue } from "../../store/reducers/searchSlice";
+import {
+  fetchDataStart,
+  fetchDataSuccess,
+  fetchDataFailure,
+} from "../../store/reducers/loaderSlice";
 import { ISearchProps } from "../../interfaces/ISearch";
 import Loader from "../Loader/Loader";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import updateUrl from "../../utils/updateUrl";
-import { useSearchContext } from "../SearchContext/SearchContext";
+import { RootState } from "../../store/rootReducer";
+import { ICustomError } from '../../interfaces/ICustomError';
 
 const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
-  const [loading, setLoading] = useState(false);
-  const { searchInputValue, setSearchInputValue } = useSearchContext();
+  const dispatch = useDispatch();
+  const searchValue = useSelector(
+    (state: RootState) => state.search.searchValue
+  );
+  const loading = useSelector((state: RootState) => state.loader.loading);
 
   useEffect(() => {
     const inputValueString = localStorage.getItem("inputValue");
     if (inputValueString) {
-      setSearchInputValue(inputValueString);
+      dispatch(saveSearchValue(inputValueString));
     }
-  }, [setSearchInputValue]);
+  }, [dispatch]);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSearchInputValue(event.target.value);
+    dispatch(saveSearchValue(event.target.value));
   };
 
   const handleSubmit = async (
@@ -28,34 +39,37 @@ const Search: React.FC<ISearchProps> = ({ onSubmit }) => {
   ): Promise<void> => {
     event.preventDefault();
 
-    localStorage.setItem("inputValue", searchInputValue);
+    localStorage.setItem("inputValue", searchValue);
 
     const apiUrl = "https://rickandmortyapi.com/api/character/";
-    const queryParam = `?name=${searchInputValue}`;
+    const queryParam = `?name=${searchValue}`;
 
     try {
-      setLoading(true);
+      dispatch(fetchDataStart());
       const filteredCharacters = await dataFilter(apiUrl, queryParam);
 
       localStorage.setItem("pageNumber", "1");
-      if (searchInputValue) {
+      if (searchValue) {
         localStorage.setItem("isFiltered", "true");
       } else {
         localStorage.setItem("isFiltered", "false");
       }
       updateUrl(1);
       onSubmit(filteredCharacters);
+      dispatch(fetchDataSuccess(filteredCharacters));
     } catch (error) {
+      const customError: ICustomError = {
+        message: "An error occurred",
+      };
       console.error("Error filtering characters:", error);
-    } finally {
-      setLoading(false);
+      dispatch(fetchDataFailure(customError));
     }
   };
 
   return (
     <section className={styles.searchWrapper}>
       <form onSubmit={handleSubmit}>
-        <Input value={searchInputValue} onChange={handleInputChange}></Input>
+        <Input value={searchValue} onChange={handleInputChange}></Input>
 
         <Button text="Search" className={styles.button}></Button>
       </form>
