@@ -28,6 +28,7 @@ export default function Home() {
   const charactersData: ICharacters | null = useSelector(
     (state: RootState) => state.loader.data
   );
+
   const searchValue = useSelector(
     (state: RootState) => state.search.searchValue
   );
@@ -85,16 +86,24 @@ export default function Home() {
 
   const handleClickPrev = () => {
     const newPage = page - 1;
-    router.query.page = String(page - 1);
-    router.push(router);
-    setPage(newPage);
+    if (newPage > 0) {
+      router.query.page = String(page - 1);
+      router.push(router);
+      setPage(newPage);
+    }
   };
 
   const handleClickNext = () => {
     const newPage = page + 1;
-    router.query.page = String(newPage);
-    router.push(router);
-    setPage(newPage);
+    if (
+      charactersData &&
+      "info" in charactersData &&
+      newPage < (charactersData as ICharacters).info.pages
+    ) {
+      router.query.page = String(newPage);
+      router.push(router);
+      setPage(newPage);
+    }
   };
 
   return (
