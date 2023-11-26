@@ -3,7 +3,7 @@ interface ILocation {
   url: string;
 }
 
-export interface IData {
+export interface ICharacter {
   id: number;
   name: string;
   status: string;
@@ -15,4 +15,14 @@ export interface IData {
   location: ILocation;
   origin: ILocation;
   type: string;
+}
+
+export interface ICharacters {
+  info: {
+    count: number;
+    next: string | null;
+    pages: number;
+    prev: string | null;
+  };
+  results: ICharacter[];
 }

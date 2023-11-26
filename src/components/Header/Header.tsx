@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Header.module.scss";
-import rickMortyLogo from "../../images/rickMorty.png";
-import { IHeaderProps } from "../../interfaces/IHeaderProps";
+import rickMortyLogo from "@/src/images/rickMorty.png";
+import { IHeaderProps } from "@/src/interfaces/IHeaderProps";
 
 const Header: React.FC<IHeaderProps> = ({ showError, handleError }) => {
   if (showError) {
@@ -12,7 +12,7 @@ const Header: React.FC<IHeaderProps> = ({ showError, handleError }) => {
     <header className={styles.header} data-testid="header">
       <img
         className={styles.logo}
-        src={rickMortyLogo}
+        src={rickMortyLogo.src}
         alt="Rick and Morty Logo"
       />
       <button data-testid="error-button" className={styles.button} onClick={handleError}>

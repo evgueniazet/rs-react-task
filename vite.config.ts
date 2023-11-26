@@ -23,9 +23,15 @@ export default defineConfig({
         "src/**/.types.ts",
         "src/utils",
         "src/api",
-        "src/components/Search"
+        "src/components/Search",
       ],
     },
     css: false,
   },
+  resolve: {
+    alias: {
+      "@": "./src",
+    },
+  },
 });
+

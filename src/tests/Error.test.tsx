@@ -1,5 +1,5 @@
 import { render, cleanup } from "@testing-library/react";
-import Error from "../pages/Error/Error";
+import Error from "../../pages/error/Error";
 
 afterEach(cleanup);
 

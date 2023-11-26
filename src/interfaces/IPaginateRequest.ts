@@ -1,4 +1,4 @@
-import { IData } from "../interfaces/IData";
+import { IData } from "./IData";
 
 export interface IPaginateRequest {
   info: {
